@@ -1,19 +1,10 @@
-import { withAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export default withAuth(
-  function middleware(req) {
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token }) => !!token,
-    },
-    pages: {
-      signIn: '/login',
-    },
-  }
-);
+export function middleware(request: NextRequest) {
+  // For now, allow all requests - authentication will be handled in pages
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [
@@ -22,8 +13,5 @@ export const config = {
     '/pages/:path*',
     '/webhooks/:path*',
     '/settings/:path*',
-    '/api/facebook/:path*',
-    '/api/leads/:path*',
-    '/api/webhooks/:path*',
   ],
 };
