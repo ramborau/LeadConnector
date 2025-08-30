@@ -1,0 +1,74 @@
+alerts:
+- rule: DEPLOYMENT_FAILED
+- rule: DOMAIN_FAILED
+domains:
+- domain: lct.botpe.com
+  type: PRIMARY
+  zone: botpe.com
+ingress:
+  rules:
+  - component:
+      name: leadconnector
+    match:
+      path:
+        prefix: /
+name: jellyfish-app
+region: blr
+services:
+- environment_slug: node-js
+  envs:
+  - key: NODE_ENV
+    scope: RUN_AND_BUILD_TIME
+    value: production
+  - key: NEXTAUTH_URL
+    scope: RUN_AND_BUILD_TIME
+    value: https://lct.botpe.com
+  - key: NEXTAUTH_SECRET
+    scope: RUN_AND_BUILD_TIME
+    value: ${NEXTAUTH_SECRET}
+  - key: FACEBOOK_CLIENT_ID
+    scope: RUN_AND_BUILD_TIME
+    value: "2198791380632171"
+  - key: FACEBOOK_CLIENT_SECRET
+    scope: RUN_AND_BUILD_TIME
+    value: ${FACEBOOK_CLIENT_SECRET}
+  - key: FACEBOOK_WEBHOOK_VERIFY_TOKEN
+    scope: RUN_AND_BUILD_TIME
+    value: leadconnector-webhook-verify-2024
+  - key: DATABASE_URL
+    scope: RUN_AND_BUILD_TIME
+    value: ${DATABASE_URL}
+  - key: ENCRYPTION_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: ${ENCRYPTION_KEY}
+  - key: NEXT_PUBLIC_APP_URL
+    scope: RUN_AND_BUILD_TIME
+    value: https://lct.botpe.com
+  - key: NEXT_PUBLIC_APP_NAME
+    scope: RUN_AND_BUILD_TIME
+    value: LeadConnector
+  - key: GOOGLE_SHEETS_PRIVATE_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: ""
+  - key: GOOGLE_SHEETS_CLIENT_EMAIL
+    scope: RUN_AND_BUILD_TIME
+    value: ""
+  - key: GOOGLE_SHEETS_PROJECT_ID
+    scope: RUN_AND_BUILD_TIME
+    value: ""
+  - key: GOOGLE_CLIENT_ID
+    scope: RUN_AND_BUILD_TIME
+    value: ""
+  - key: GOOGLE_CLIENT_SECRET
+    scope: RUN_AND_BUILD_TIME
+    value: ""
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: ramborau/LeadConnector
+  http_port: 8080
+  instance_count: 2
+  instance_size_slug: apps-s-1vcpu-1gb
+  name: leadconnector
+  run_command: npm start
+  source_dir: /
