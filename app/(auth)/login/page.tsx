@@ -35,14 +35,23 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simple email validation for demo purposes
-    if (formData.email && formData.password) {
-      // In a real app, this would authenticate with your backend
-      // For demo purposes, we'll create a mock session and redirect to dashboard
-      router.push('/dashboard');
-    } else {
+    try {
+      const result = await signIn('credentials', {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
+      
+      if (result?.ok) {
+        router.push('/dashboard');
+      } else {
+        alert('Invalid email or password');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('Login failed. Please try again.');
       setIsLoading(false);
-      alert('Please enter both email and password');
     }
   };
 
