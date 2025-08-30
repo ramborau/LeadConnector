@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model - stores authenticated users
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  facebookId    String    @unique
+  accessToken   String    @db.Text
+  refreshToken  String?   @db.Text
+  tokenExpiry   DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLogin     DateTime?
+  
+  // Relations
+  pages         Page[]
+  webhooks      Webhook[]
+  @@index([email])
+  @@index([facebookId])
+  @@map("users")
+}
+
+// Page model - Facebook pages connected by users
+model Page {
+  id              String    @id @default(cuid())
+  facebookPageId  String    @unique
+  name            String
+  category        String?
+  accessToken     String    @db.Text
+  isActive        Boolean   @default(true)
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  // Relations
+  leads           Lead[]
+  webhookConfigs  PageWebhookConfig[]
+  
+  @@index([userId])
+  @@index([facebookPageId])
+  @@index([isActive])
+  @@map("pages")
+}
+
+// Lead model - captured Facebook leads
+model Lead {
+  id              String      @id @default(cuid())
+  facebookLeadId  String      @unique
+  pageId          String
+  page            Page        @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  formId          String
+  formName        String
+  campaignId      String?
+  campaignName    String?
+  adsetId         String?
+  adsetName       String?
+  adId            String?
+  adName          String?
+  leadData        Json
+  status          LeadStatus  @default(NEW)
+  createdAt       DateTime    @default(now())
+  processedAt     DateTime?
+  
+  // Relations
+  deliveries      WebhookDelivery[]
+  
+  @@index([pageId])
+  @@index([status])
+  @@index([createdAt])
+  @@index([facebookLeadId])
+  @@map("leads")
+}
+
+// Webhook model - webhook endpoints configuration
+model Webhook {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  url           String
+  method        HttpMethod  @default(POST)
+  headers       Json?
+  authType      AuthType    @default(NONE)
+  authConfig    Json?
+  retryCount    Int         @default(3)
+  timeoutMs     Int         @default(30000)
+  isActive      Boolean     @default(true)
+  lastSuccess   DateTime?
+  lastFailure   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  // Relations
+  deliveries    WebhookDelivery[]
+  pageConfigs   PageWebhookConfig[]
+  
+  @@index([userId])
+  @@index([isActive])
+  @@map("webhooks")
+}
+
+// PageWebhookConfig model - links pages to webhooks
+model PageWebhookConfig {
+  id          String    @id @default(cuid())
+  pageId      String
+  page        Page      @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  webhookId   String
+  webhook     Webhook   @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  
+  @@unique([pageId, webhookId])
+  @@index([pageId])
+  @@index([webhookId])
+  @@map("page_webhook_configs")
+}
+
+// WebhookDelivery model - tracks webhook delivery attempts
+model WebhookDelivery {
+  id            String          @id @default(cuid())
+  webhookId     String
+  webhook       Webhook         @relation(fields: [webhookId], references: [id], onDelete: Cascade)
+  leadId        String
+  lead          Lead            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  status        DeliveryStatus  @default(PENDING)
+  statusCode    Int?
+  responseBody  String?         @db.Text
+  error         String?         @db.Text
+  attemptNumber Int             @default(1)
+  nextRetryAt   DateTime?
+  createdAt     DateTime        @default(now())
+  completedAt   DateTime?
+  
+  @@index([webhookId])
+  @@index([leadId])
+  @@index([status])
+  @@index([nextRetryAt])
+  @@map("webhook_deliveries")
+}
+
+// Enums
+enum LeadStatus {
+  NEW
+  PROCESSING
+  DELIVERED
+  FAILED
+  ARCHIVED
+}
+
+enum DeliveryStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  RETRYING
+}
+
+enum HttpMethod {
+  POST
+  PUT
+  PATCH
+}
+
+enum AuthType {
+  NONE
+  BASIC
+  BEARER
+  API_KEY
+  CUSTOM
+}
