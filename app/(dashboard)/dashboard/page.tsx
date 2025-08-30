@@ -12,7 +12,9 @@ import {
   TrendingUp,
   RefreshCw,
   Plus,
-  ArrowRight
+  ArrowRight,
+  FileSpreadsheet,
+  Facebook
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -110,14 +112,17 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick Actions */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
-            <CardTitle>Connect Facebook Pages</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Facebook className="h-5 w-5 text-blue-600" />
+              Connect Facebook Pages
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
-              Connect your Facebook pages to start receiving leads
+              Connect your Facebook pages to start receiving leads from your ads
             </p>
             <Link href="/pages">
               <Button className="w-full">
@@ -130,7 +135,30 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Configure Webhooks</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <FileSpreadsheet className="h-5 w-5 text-green-600" />
+              Google Sheets
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">
+              Export your leads automatically to Google Sheets
+            </p>
+            <Link href="/google-sheets">
+              <Button className="w-full">
+                <Plus className="mr-2 h-4 w-4" />
+                Setup Integration
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Zap className="h-5 w-5 text-yellow-600" />
+              Configure Webhooks
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">
@@ -147,7 +175,10 @@ export default function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>View Leads</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5 text-purple-600" />
+              View Leads
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground mb-4">

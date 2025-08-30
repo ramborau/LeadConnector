@@ -5,7 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import FacebookConnect from '@/components/facebook-connect';
 import WebhookConfig from '@/components/webhook-config';
-import { Facebook, Users, Zap, CheckCircle, Plus, ExternalLink } from 'lucide-react';
+import GoogleSheetsConnect from '@/components/google-sheets-connect';
+import { Facebook, Users, Zap, CheckCircle, Plus, ExternalLink, FileSpreadsheet } from 'lucide-react';
 
 export default function PagesPage() {
   const { data: session } = useSession();
@@ -95,6 +96,7 @@ export default function PagesPage() {
                     {page.isConnected ? (
                       <>
                         <WebhookConfig pageId={page.id} pageName={page.name} />
+                        <GoogleSheetsConnect pageId={page.id} pageName={page.name} />
                         <Button variant="outline" size="sm" className="w-full">
                           <Users className="h-4 w-4 mr-2" />
                           View Leads

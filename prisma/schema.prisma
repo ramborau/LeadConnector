@@ -12,8 +12,9 @@ model User {
   id            String    @id @default(cuid())
   email         String    @unique
   name          String?
-  facebookId    String    @unique
-  accessToken   String    @db.Text
+  password      String?   // For local authentication
+  facebookId    String?   @unique // Make optional for local users
+  accessToken   String?   @db.Text // Make optional
   refreshToken  String?   @db.Text
   tokenExpiry   DateTime?
   image         String?
@@ -24,6 +25,7 @@ model User {
   // Relations
   pages         Page[]
   webhooks      Webhook[]
+  googleSheetIntegrations GoogleSheetIntegration[]
   @@index([email])
   @@index([facebookId])
   @@map("users")
@@ -45,6 +47,7 @@ model Page {
   // Relations
   leads           Lead[]
   webhookConfigs  PageWebhookConfig[]
+  googleSheetIntegrations GoogleSheetIntegration[]
   
   @@index([userId])
   @@index([facebookPageId])
@@ -146,6 +149,29 @@ model WebhookDelivery {
   @@index([status])
   @@index([nextRetryAt])
   @@map("webhook_deliveries")
+}
+
+// Google Sheets Integration model
+model GoogleSheetIntegration {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pageId          String?
+  page            Page?     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  spreadsheetId   String
+  spreadsheetName String
+  sheetName       String
+  isActive        Boolean   @default(true)
+  lastSync        DateTime?
+  totalLeads      Int       @default(0)
+  columnMappings  Json      // Store column mappings as JSON
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([pageId])
+  @@index([isActive])
+  @@map("google_sheet_integrations")
 }
 
 // Enums

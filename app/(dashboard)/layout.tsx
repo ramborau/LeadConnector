@@ -10,6 +10,7 @@ import {
   Users, 
   Webhook,
   FileText,
+  FileSpreadsheet,
   Settings,
   LogOut,
   Menu,
@@ -36,6 +37,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     { name: 'Leads', href: '/leads', icon: Users },
     { name: 'Pages', href: '/pages', icon: FileText },
     { name: 'Webhooks', href: '/webhooks', icon: Webhook },
+    { name: 'Google Sheets', href: '/google-sheets', icon: FileSpreadsheet },
     { name: 'Settings', href: '/settings', icon: Settings },
   ];
 
