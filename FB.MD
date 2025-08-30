@@ -58,7 +58,8 @@ This guide will walk you through setting up a Facebook App with the required per
    - **Valid OAuth Redirect URIs:**
      ```
      http://localhost:3000/api/auth/callback/facebook
-     https://yourdomain.com/api/auth/callback/facebook
+     https://01b173750ad6.ngrok-free.app/api/auth/callback/facebook
+     https://lct.botpe.com/api/auth/callback/facebook
      ```
    - **Client OAuth Login:** Yes
    - **Web OAuth Login:** Yes

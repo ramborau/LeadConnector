@@ -7,8 +7,8 @@ export async function GET(req: NextRequest) {
   const token = searchParams.get('hub.verify_token');
   const challenge = searchParams.get('hub.challenge');
 
-  // Verify webhook - in production, verify against WEBHOOK_VERIFY_TOKEN
-  if (mode === 'subscribe' && token === 'your-verify-token') {
+  // Verify webhook against environment variable
+  if (mode === 'subscribe' && token === process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN) {
     return new NextResponse(challenge);
   }
 
