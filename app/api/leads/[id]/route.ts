@@ -1,53 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/lib/auth';
-import { LeadService } from '@/services/lead.service';
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession(authOptions);
-  
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
-    const lead = await LeadService.getLeadById(params.id, session.user.id);
-    return NextResponse.json(lead);
+    return NextResponse.json({ 
+      message: `Get lead ${params.id} endpoint - will be implemented with database setup`,
+      lead: null
+    });
   } catch (error) {
-    console.error('Error fetching lead:', error);
+    console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Lead not found' },
-      { status: 404 }
+      { error: 'Internal server error' },
+      { status: 500 }
     );
   }
 }
 
-export async function PATCH(
+export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const session = await getServerSession(authOptions);
-  
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const { status } = await req.json();
-
   try {
-    const lead = await LeadService.updateLeadStatus(
-      params.id,
-      status,
-      session.user.id
-    );
-    return NextResponse.json(lead);
+    return NextResponse.json({ 
+      message: `Update lead ${params.id} endpoint - will be implemented with database setup`
+    });
   } catch (error) {
-    console.error('Error updating lead:', error);
+    console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Failed to update lead' },
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    return NextResponse.json({ 
+      message: `Delete lead ${params.id} endpoint - will be implemented with database setup`
+    });
+  } catch (error) {
+    console.error('Error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
