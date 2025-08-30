@@ -68,7 +68,7 @@ const handler = NextAuth({
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: "email,public_profile,pages_show_list,pages_read_engagement,leads_retrieval",
+          scope: "email,public_profile",
         },
       },
     })
