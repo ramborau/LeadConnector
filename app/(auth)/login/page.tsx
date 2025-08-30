@@ -35,11 +35,15 @@ export default function LoginPage() {
     e.preventDefault();
     setIsLoading(true);
     
-    // For now, redirect to Facebook login after email validation
-    // In production, this would authenticate with your backend
-    setTimeout(() => {
-      handleFacebookLogin();
-    }, 1000);
+    // Simple email validation for demo purposes
+    if (formData.email && formData.password) {
+      // In a real app, this would authenticate with your backend
+      // For demo purposes, we'll create a mock session and redirect to dashboard
+      router.push('/dashboard');
+    } else {
+      setIsLoading(false);
+      alert('Please enter both email and password');
+    }
   };
 
   const handleFacebookLogin = async () => {
