@@ -6,8 +6,8 @@ import { SessionProvider } from '@/components/providers/session-provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'LeadConnector - Facebook Lead Ads Integration',
-  description: 'Automate your Facebook Lead Ads with webhook integrations',
+  title: 'LeadConnector by SARACE DIGITALSOLUTIONS',
+  description: 'Automate your Lead Ads with webhook integrations - by SARACE DIGITALSOLUTIONS',
 }
 
 export default function RootLayout({

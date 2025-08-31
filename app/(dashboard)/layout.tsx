@@ -56,7 +56,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       } fixed inset-y-0 left-0 z-50 w-64 bg-white border-r transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0`}>
         <div className="flex items-center justify-between h-16 px-6 border-b">
-          <h1 className="text-xl font-bold text-primary">LeadConnector</h1>
+          <div>
+            <h1 className="text-xl font-bold text-primary">LeadConnector</h1>
+            <p className="text-xs text-gray-500 mt-1">by SARACE DIGITALSOLUTIONS</p>
+          </div>
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden"
@@ -116,7 +119,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-xl font-bold text-primary">LeadConnector</h1>
+            <div className="text-center">
+              <h1 className="text-lg font-bold text-primary">LeadConnector</h1>
+              <p className="text-xs text-gray-500">by SARACE DIGITALSOLUTIONS</p>
+            </div>
           </div>
         </header>
 
