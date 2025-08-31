@@ -66,6 +66,12 @@ const handler = NextAuth({
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          scope: "email,public_profile",
+          auth_type: "rerequest",
+        },
+      },
     })
   ],
   pages: {
